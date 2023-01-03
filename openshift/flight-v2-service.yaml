@@ -1,0 +1,15 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: flight-v2
+  labels:
+    app: flight-v2
+spec:
+  ports:
+    - name: 9103-tcp
+      protocol: TCP
+      port: 9103
+      targetPort: 9103
+  selector:
+    app: flight-v2
+    deploymentconfig: flight-v2

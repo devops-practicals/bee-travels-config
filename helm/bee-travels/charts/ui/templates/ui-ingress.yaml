@@ -1,0 +1,17 @@
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  name: bee-travels-ingress
+spec:
+  tls:
+    - hosts: 
+        - {{ .Values.ingress.host }}
+      secretName: {{ .Values.global.ingress.secret }}
+  rules:
+    - host: {{ .Values.global.ingress.host }}
+      http:
+        paths:
+          - path: /
+            backend:
+              serviceName: {{ .Values.ingress.name}}
+              servicePort: 80

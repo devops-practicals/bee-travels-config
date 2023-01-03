@@ -1,0 +1,72 @@
+kind: DeploymentConfig
+apiVersion: apps.openshift.io/v1
+metadata:
+  name: flight-v2
+  labels:
+    app: flight-v2
+    app.kubernetes.io/component: flight-v2
+    app.kubernetes.io/instance: flight-v2
+    app.kubernetes.io/part-of: bee-travels
+spec:
+  strategy:
+    type: Rolling
+    rollingParams:
+      updatePeriodSeconds: 1
+      intervalSeconds: 1
+      timeoutSeconds: 600
+      maxUnavailable: 25%
+      maxSurge: 25%
+    resources:
+      limits:
+        cpu: 200m
+        memory: 256Mi
+      requests:
+        cpu: 200m
+        memory: 256Mi
+    activeDeadlineSeconds: 21600
+  replicas: 1
+  revisionHistoryLimit: 10
+  selector:
+    app: flight-v2
+    deploymentconfig: flight-v2
+  template:
+    metadata:
+      labels:
+        app: flight-v2
+        deploymentconfig: flight-v2
+    spec:
+      containers:
+        - name: flight-v2
+          image: beetravels/flights-v2:node-540d5182fe943a3ad87c559dd7fcce025cec9833
+          ports:
+            - containerPort: 9103
+              protocol: TCP
+          env:
+            - name: HOST_IP
+              value: flight-v2
+            - name: LOG_LEVEL
+              value: info
+            - name: PORT
+              value: '9103'
+            - name: SCHEME
+              value: http
+            - name: DATABASE
+              value: postgres
+            - name: PG_HOST
+              value: postgres
+            - name: PG_PORT
+              value: '5432'
+            - name: PG_USER
+              value: postgres
+            - name: PG_PASSWORD
+              value: postgres
+          resources:
+            limits:
+              cpu: 200m
+              memory: 256Mi
+            requests:
+              cpu: 200m
+              memory: 256Mi
+          imagePullPolicy: Always
+      restartPolicy: Always
+      terminationGracePeriodSeconds: 30

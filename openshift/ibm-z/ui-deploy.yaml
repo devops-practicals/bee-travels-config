@@ -1,0 +1,68 @@
+kind: DeploymentConfig
+apiVersion: apps.openshift.io/v1
+metadata:
+  name: ui
+  labels:
+    app: ui
+    app.kubernetes.io/component: ui
+    app.kubernetes.io/instance: ui
+    app.kubernetes.io/part-of: bee-travels
+spec:
+  strategy:
+    type: Rolling
+    rollingParams:
+      updatePeriodSeconds: 1
+      intervalSeconds: 1
+      timeoutSeconds: 600
+      maxUnavailable: 25%
+      maxSurge: 25%
+    resources:
+      limits:
+        cpu: 100m
+        memory: 256Mi
+      requests:
+        cpu: 100m
+        memory: 256Mi
+    activeDeadlineSeconds: 21600
+  replicas: 1
+  revisionHistoryLimit: 10
+  selector:
+    app: ui
+    deploymentconfig: ui
+  template:
+    metadata:
+      labels:
+        app: ui
+        deploymentconfig: ui
+    spec:
+      containers:
+        - name: ui
+          image: beetravels/ui:node-z
+          ports:
+            - containerPort: 9000
+              protocol: TCP
+          env:
+            - name: CAR_URL
+              value: 'http://carrental-v${SERVICE_VERSION}:9102'
+            - name: CURRENCY_EXCHANGE_URL
+              value: 'http://currencyexchange:9201'
+            - name: DESTINATION_URL
+              value: 'http://destination-v${SERVICE_VERSION}:9001'
+            - name: HOTEL_URL
+              value: 'http://hotel-v${SERVICE_VERSION}:9101'
+            - name: FLIGHTS_URL
+              value: 'http://flight-v${SERVICE_VERSION}:9103'
+            - name: NODE_ENV
+              value: production
+            - name: PORT
+              value: '9000'
+          resources:
+            limits:
+              cpu: 100m
+              memory: 256Mi
+            requests:
+              cpu: 100m
+              memory: 256Mi
+          imagePullPolicy: Always
+      restartPolicy: Always
+      terminationGracePeriodSeconds: 30

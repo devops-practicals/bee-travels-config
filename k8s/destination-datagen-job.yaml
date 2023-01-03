@@ -1,0 +1,29 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: datagen-destination
+spec:
+  template:
+    metadata:
+      name: datagen-destination
+    spec:
+      containers:
+        - image: beetravels/data-gen-destination:03f717cd222cc6e0bd0327f24595b9d8e8bdc2f0
+          imagePullPolicy: Always
+          name: datagen-destination
+          env:
+            - name: PG_USER
+              value: postgress
+            - name: PG_HOST
+              value: "172.21.58.148"
+            - name: PG_PASSWORD
+              value: Oyg9YxwKmm
+            - name: MONGO_CONNECTION_URL
+              value: mongodb://admin:admin@mongo:27017
+            - name: COUCH_CONNECTION_URL
+              value: http://admin:admin@couch:5984
+            - name: GENERATE_DATA
+              value: "false"
+            - name: DATABASE
+              value: postgres
+      restartPolicy: OnFailure

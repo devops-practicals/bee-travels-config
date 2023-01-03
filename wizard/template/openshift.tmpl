@@ -1,0 +1,18 @@
+#!/bin/bash
+oc new-project bee-travels
+oc project bee-travels
+{{if .Destination}}
+oc new-app --docker-image beetravels/destination:{{ .Destination.Tag }}
+{{- end}}
+{{if .Hotel}}
+oc new-app --docker-image beetravels/hotel:{{ .Hotel.Tag}}
+{{- end}}
+{{if .Currencyexchange}}
+oc new-app --docker-image beetravels/currencyexchange:{{ .Currencyexchange.Tag }}
+{{- end}}
+{{if .UI}} 
+oc new-app --docker-image beetravels/ui:{{ .UI.Tag }} -e PORT=9000 -e DESTINATION_URL="http://destination:4000" -e HOTEL_URL="http://hotel:9002" -e CURRENCY_EXCHANGE_URL="http://currencyexchange:4001"
+
+oc expose svc ui
+oc status
+{{end}}

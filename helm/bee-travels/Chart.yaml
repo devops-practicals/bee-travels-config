@@ -1,0 +1,17 @@
+apiVersion: v2
+name: bee-travels
+description: A Helm chart for bee travels application. 
+
+type: application
+
+version: 0.0.7
+
+appVersion: 1.0.0
+
+kubeVersion: ">=1.14.0"
+
+maintainers:
+  - name: Mofizur Rahman
+    email: moficodes@gmail.com  
+    url: https://github.com/moficodes
+  

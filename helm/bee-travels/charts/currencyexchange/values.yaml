@@ -1,0 +1,22 @@
+deployment:
+  name: currencyexchange
+  version: v1
+  replicas: 1
+  image: beetravels/currencyexchange
+  envs:
+    PORT: 4001
+    HOST_IP: currencyexchange
+    SCHEME: http
+  limits:
+    cpu: 200m
+    memory: 256Mi
+  requests:
+    cpu: 200m
+    memory: 256Mi
+service:
+  name: currencyexchange
+  type: ClusterIP
+  port: 80
+  protocol: TCP
+  targetPort: 4001
+

@@ -1,0 +1,54 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: carrental
+  labels:
+    run: carrental
+    version: v1
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      run: carrental
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        run: carrental
+    spec:
+      containers:
+      - image: beetravels/carrental-v2:node-v1.0.0
+        imagePullPolicy: Always
+        name: carrental
+        env:
+          - name: PORT
+            value: "9102"
+          - name: HOST_IP
+            value: carrental
+          - name: SCHEME
+            value: http
+          - name: DATABASE
+            value: postgres
+          - name: MONGO_CONNECTION_URL
+            value: mongodb://admin:admin@mongo:27017
+          - name: COUCH_CLOUDANT_CONNECTION_URL
+            value: http://admin:admin@couch:5984
+          - name: PG_HOST
+            value: bee-travels-db-postgresql
+          - name: PG_USER
+            value: postgres
+          - name: PG_PASSWORD
+            value: Oyg9YxwKmm
+        resources:
+          limits:
+            cpu: 200m
+            memory: 256Mi
+          requests:
+            cpu: 200m
+            memory: 256Mi
+      restartPolicy: Always
+      

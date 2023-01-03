@@ -1,0 +1,22 @@
+deployment:
+  name: hotel
+  version: v1
+  replicas: 1
+  image: beetravels/hotel
+  envs:
+    PORT: 9002
+    HOST_IP: hotel
+    SCHEME: http
+  limits:
+    cpu: 200m
+    memory: 256Mi
+  requests:
+    cpu: 200m
+    memory: 256Mi
+service:
+  name: hotel
+  type: ClusterIP
+  port: 80
+  protocol: TCP
+  targetPort: 9002
+

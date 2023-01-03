@@ -1,0 +1,59 @@
+{
+  "v1": {
+    "enabled": true,
+    "NodeJS": {
+      "tag": "dev-48b1f20ca4aac12b41a33417841d91791601ebe5",
+      "enabled": true
+    },
+    "Python 3": {
+      "tag": "dev-python",
+      "enabled": true
+    },
+    "Go": {
+      "tag": "",
+      "enabled": false
+    },
+    "Java EE": {
+      "tag": "",
+      "enabled": false
+    }
+  },
+  "v2": {
+    "enabled": true,
+    "NodeJS": {
+      "tag": "dev-48b1f20ca4aac12b41a33417841d91791601ebe5",
+      "enabled": true
+    },
+    "Python 3": {
+      "tag": "",
+      "enabled": false
+    },
+    "Go": {
+      "tag": "",
+      "enabled": false
+    },
+    "Java EE": {
+      "tag": "",
+      "enabled": false
+    }
+  },
+  "v3": {
+    "enabled": true,
+    "NodeJS": {
+      "tag": "dev-48b1f20ca4aac12b41a33417841d91791601ebe5",
+      "enabled": true
+    },
+    "Python 3": {
+      "tag": "",
+      "enabled": false
+    },
+    "Go": {
+      "tag": "",
+      "enabled": false
+    },
+    "Java EE": {
+      "tag": "",
+      "enabled": false
+    }
+  }
+}

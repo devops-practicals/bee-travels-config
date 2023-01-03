@@ -1,0 +1,12 @@
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  name: bee-ingress
+spec:
+  rules:
+    - host: bee-travels.mofi-kn.us-east.containers.appdomain.cloud
+      http:
+          paths:
+            - backend:
+                serviceName: bee-ui
+                servicePort: 80

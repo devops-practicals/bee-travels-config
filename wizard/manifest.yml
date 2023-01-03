@@ -1,0 +1,9 @@
+---
+applications:
+- name: bee-travels-wizard
+  random-route: true
+  memory: 256M
+  env:
+    GOVERSION: go1.14
+    GOPACKAGENAME: wizard
+  buildpack: https://github.com/cloudfoundry/go-buildpack.git

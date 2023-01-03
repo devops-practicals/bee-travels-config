@@ -1,0 +1,22 @@
+deployment:
+  name: destination
+  version: v1
+  replicas: 1
+  image: beetravels/destination
+  envs:
+    PORT: 4000
+    HOST_IP: destination
+    SCHEME: http
+  limits:
+    cpu: 200m
+    memory: 256Mi
+  requests:
+    cpu: 200m
+    memory: 256Mi
+service:
+  name: destination
+  type: ClusterIP
+  port: 80
+  protocol: TCP
+  targetPort: 4000
+

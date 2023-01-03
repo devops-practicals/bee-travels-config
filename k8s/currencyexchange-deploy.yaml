@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: currencyexchange
+  labels:
+    run: currencyexchange
+    version: v1
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      run: currencyexchange
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        run: currencyexchange
+    spec:
+      containers:
+      - image: beetravels/currencyexchange:node-v1.0.0
+        imagePullPolicy: Always
+        name: currencyexchange
+        env:
+          - name: PORT
+            value: "9201"
+          - name: HOST_IP
+            value: currencyexchange
+          - name: SCHEME
+            value: http
+        resources:
+          limits:
+            cpu: 200m
+            memory: 256Mi
+          requests:
+            cpu: 200m
+            memory: 256Mi
+      restartPolicy: Always
+      

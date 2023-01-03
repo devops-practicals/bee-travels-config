@@ -1,0 +1,77 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    deployment.kubernetes.io/revision: "1"
+  generation: 2
+  labels:
+    olm.owner: postgresql-operator.v0.1.1
+    olm.owner.kind: ClusterServiceVersion
+    olm.owner.namespace: bee-travels
+  name: postgresql-operator
+  namespace: bee-travels
+spec:
+  progressDeadlineSeconds: 600
+  replicas: 1
+  revisionHistoryLimit: 10
+  selector:
+    matchLabels:
+      name: postgresql-operator
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+    type: RollingUpdate
+  template:
+    metadata:
+      annotations:
+        capabilities: Full Lifecycle
+        categories: Database
+        certified: "false"
+        containerImage: quay.io/dev4devs-com/postgresql-operator:0.1.1
+        description: Operator in Go developed using the Operator Framework to package,
+          install, configure and manage a PostgreSQL database. This project includes
+          backup feature.
+        olm.operatorGroup: bee-travels
+        olm.operatorNamespace: bee-travels
+        olm.targetNamespaces: bee-travels
+        repository: https://github.com/dev4devs-com/postgresql-operator
+        support: Dev4Devs, Inc
+      labels:
+        name: postgresql-operator
+    spec:
+      containers:
+      - command:
+        - postgresql-operator
+        env:
+        - name: WATCH_NAMESPACE
+          valueFrom:
+            fieldRef:
+              apiVersion: v1
+              fieldPath: metadata.annotations['olm.targetNamespaces']
+        - name: POD_NAME
+          valueFrom:
+            fieldRef:
+              apiVersion: v1
+              fieldPath: metadata.name
+        - name: OPERATOR_NAME
+          value: postgresql-operator
+        image: quay.io/dev4devs-com/postgresql-operator:0.1.1
+        imagePullPolicy: Always
+        name: postgresql-operator
+        resources:
+          limits:
+            cpu: 60m
+            memory: 128Mi
+          requests:
+            cpu: 30m
+            memory: 64Mi
+        terminationMessagePath: /dev/termination-log
+        terminationMessagePolicy: File
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+      schedulerName: default-scheduler
+      securityContext: {}
+      serviceAccount: postgresql-operator
+      serviceAccountName: postgresql-operator
+      terminationGracePeriodSeconds: 30

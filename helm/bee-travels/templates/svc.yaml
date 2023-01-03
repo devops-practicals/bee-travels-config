@@ -1,0 +1,16 @@
+{{- define "bee-travels.svc" }}
+kind: Service
+apiVersion: v1
+metadata:
+  name: {{ .name }}
+  labels:
+    run: {{ .name }}
+spec:
+  selector:
+    run: {{ .name }}
+  type: {{ .type }}
+  ports:
+  - port: {{ .port }}
+    protocol: {{ .protocol }}
+    targetPort: {{ .targetPort }}
+{{- end}}

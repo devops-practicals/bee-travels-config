@@ -1,0 +1,369 @@
+{{if .UI}} 
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: bee-ui
+  labels:
+    run: bee-ui
+    version: v1
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      run: bee-ui
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        run: bee-ui
+    spec:
+      containers:
+      - image: bee-travels/ui:{{ .UI.Tag }}
+        imagePullPolicy: Always
+        name: bee-ui
+        env:
+          - name: PORT
+            value: "9000"
+          - name: DESTINATION_URL
+            value: http://destination
+          - name: HOTEL_URL
+            value: http://hotel
+          - name: CURRENCY_EXCHANGE_URL
+            value: http://currencyexchange
+        resources:
+          limits:
+            cpu: 200m
+            memory: 256Mi
+          requests:
+            cpu: 200m
+            memory: 256Mi
+      restartPolicy: Always
+
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: bee-ui
+  labels:
+    run: bee-ui
+spec:
+  selector:
+    run: bee-ui
+  type: NodePort
+  ports:
+  - port: 80
+    protocol: TCP
+    targetPort: 9000
+{{- end}}
+{{if .Destination}}  
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{.Destination.Service}}
+  labels:
+    run: {{.Destination.Service}}
+    version: {{.Version}}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      run: {{.Destination.Service}}
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        run: {{.Destination.Service}}
+    spec:
+      containers:
+      - image: bee-travels/{{.Destination.Service}}-{{.Version}}:{{ .Destination.Tag }}
+        imagePullPolicy: Always
+        name: {{.Destination.Service}}
+        env:
+          - name: PORT
+            value: "9001"
+          - name: HOST_IP
+            value: {{.Destination.Service}}
+          - name: SCHEME
+            value: http
+        resources:
+          limits:
+            cpu: 200m
+            memory: 256Mi
+          requests:
+            cpu: 200m
+            memory: 256Mi
+      restartPolicy: Always
+
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: {{.Destination.Service}}
+  labels:
+    run: {{.Destination.Service}}
+spec:
+  selector:
+    run: {{.Destination.Service}}
+  type: ClusterIP
+  ports:
+  - port: 80
+    protocol: TCP
+    targetPort: 9001
+{{- end}}
+{{if .Hotel}}  
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Hotel.Service}}
+  labels:
+    run: {{ .Hotel.Service}}
+    version: v1
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      run: {{ .Hotel.Service}}
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        run: {{ .Hotel.Service}}
+    spec:
+      containers:
+      - image: bee-travels/hotel-{{.Version}}:/{{ .Hotel.Tag }}
+        imagePullPolicy: Always
+        name: hotel
+        env:
+          - name: PORT
+            value: "9101"
+          - name: HOST_IP
+            value: {{ .Hotel.Service}}
+          - name: SCHEME
+            value: http
+        resources:
+          limits:
+            cpu: 200m
+            memory: 256Mi
+          requests:
+            cpu: 200m
+            memory: 256Mi
+      restartPolicy: Always
+
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: {{ .Hotel.Service}}
+  labels:
+    run: {{ .Hotel.Service}}
+spec:
+  selector:
+    run: {{ .Hotel.Service}}
+  type: ClusterIP
+  ports:
+  - port: 80
+    protocol: TCP
+    targetPort: 9101
+{{- end}}
+
+{{if .Carrental}}  
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Carrental.Service }}
+  labels:
+    run: {{ .Carrental.Service }}
+    version: {{.Version}}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      run: {{ .Carrental.Service }}
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        run: {{ .Carrental.Service }}
+    spec:
+      containers:
+      - image: bee-travels/{{ .Carrental.Service }}-{{.Version}}:/{{ .Carrental.Tag }}
+        imagePullPolicy: Always
+        name: {{ .Carrental.Service }}
+        env:
+          - name: PORT
+            value: "9102"
+          - name: HOST_IP
+            value: {{ .Carrental.Service }}
+          - name: SCHEME
+            value: http
+        resources:
+          limits:
+            cpu: 200m
+            memory: 256Mi
+          requests:
+            cpu: 200m
+            memory: 256Mi
+      restartPolicy: Always
+
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: {{ .Carrental.Service }}
+  labels:
+    run: {{ .Carrental.Service }}
+spec:
+  selector:
+    run: {{ .Carrental.Service }}
+  type: ClusterIP
+  ports:
+  - port: 80
+    protocol: TCP
+    targetPort: 9102
+{{- end}}
+
+{{if .Flight}}  
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Flight.Service }}
+  labels:
+    run: {{ .Flight.Service }}
+    version: v1
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      run: {{ .Flight.Service }}
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        run: {{ .Flight.Service }}
+    spec:
+      containers:
+      - image: bee-travels/{{ .Flight.Service }}-{{.Version}}:/{{ .Flight.Tag }}
+        imagePullPolicy: Always
+        name: {{ .Flight.Service }}
+        env:
+          - name: PORT
+            value: "9103"
+          - name: HOST_IP
+            value: {{ .Flight.Service }}
+          - name: SCHEME
+            value: http
+        resources:
+          limits:
+            cpu: 200m
+            memory: 256Mi
+          requests:
+            cpu: 200m
+            memory: 256Mi
+      restartPolicy: Always
+
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: {{ .Flight.Service }}
+  labels:
+    run: {{ .Flight.Service }}
+spec:
+  selector:
+    run: {{ .Flight.Service }}
+  type: ClusterIP
+  ports:
+  - port: 80
+    protocol: TCP
+    targetPort: 9103
+{{- end}}
+
+{{if .Currencyexchange}}  
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{.Currencyexchange.Service}}
+  labels:
+    run: {{.Currencyexchange.Service}}
+    version: v1
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      run: {{.Currencyexchange.Service}}
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        run: {{.Currencyexchange.Service}}
+    spec:
+      containers:
+      - image: bee-travels/cu{{.Currencyexchange.Service}}-{{.Version}}:{{ .Currencyexchange.Tag }}
+        imagePullPolicy: Always
+        name: currencyexchange
+        env:
+          - name: PORT
+            value: "9202"
+          - name: HOST_IP
+            value: {{.Currencyexchange.Service}}
+          - name: SCHEME
+            value: http
+        resources:
+          limits:
+            cpu: 200m
+            memory: 256Mi
+          requests:
+            cpu: 200m
+            memory: 256Mi
+      restartPolicy: Always
+
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: {{.Currencyexchange.Service}}
+  labels:
+    run: {{.Currencyexchange.Service}}
+spec:
+  selector:
+    run: {{.Currencyexchange.Service}}
+  type: ClusterIP
+  ports:
+  - port: 80
+    protocol: TCP
+    targetPort: 9202
+{{- end}}

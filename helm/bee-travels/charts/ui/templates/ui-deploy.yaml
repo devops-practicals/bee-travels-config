@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.deployment.name }}
+  labels:
+    run: {{ .Values.deployment.name }}
+    app: {{ .Values.deployment.name }}
+    version: {{ .Values.deployment.version }}
+spec:
+  replicas: {{ .Values.deployment.replicas }}
+  selector:
+    matchLabels:
+      run: {{ .Values.deployment.name }}
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        run: {{ .Values.deployment.name }}
+    spec:
+      containers:
+      - image: {{ .Values.deployment.image }}:{{ .Values.global.tag }}
+        imagePullPolicy: Always
+        name: {{ .Values.deployment.name }}
+        env:
+        {{- range $key, $value := .Values.deployment.envs }}
+          - name: {{ $key | quote}}
+            value: {{ $value | quote}}
+        {{- end }}
+        resources:
+          limits:
+            cpu: {{ .Values.deployment.limits.cpu }}
+            memory: {{ .Values.deployment.limits.memory }}
+          requests:
+            cpu: {{ .Values.deployment.requests.cpu }}
+            memory: {{ .Values.deployment.requests.memory }}
+      restartPolicy: Always
