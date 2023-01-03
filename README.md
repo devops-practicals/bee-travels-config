@@ -49,6 +49,9 @@ OR
 ./deploy-k8s-v2.sh
 ```
 
+#### ISSUE
+- The UI is accessible in K8s Environment, the destination URL path mapping is having issue.
+
 ### Knative
 
 TODO
