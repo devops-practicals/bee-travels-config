@@ -30,18 +30,18 @@ spec:
           - name: NODE_ENV
             value: production
           - name: DESTINATION_URL
-            value: http://destination
+            value: https://b45fd817a6ca40988ef20e6ed948a44f-167772166-simba09b.environments.katacoda.com/destination
           - name: CAR_URL
-            value: http://carrental
+            value: https://b45fd817a6ca40988ef20e6ed948a44f-167772166-simba09b.environments.katacoda.com/carrental
           - name: HOTEL_URL
-            value: http://hotel
+            value: https://b45fd817a6ca40988ef20e6ed948a44f-167772166-simba09b.environments.katacoda.com/hotel
           - name: CURRENCY_EXCHANGE_URL
-            value: http://currencyexchange
-        resources:
-          limits:
-            cpu: 200m
-            memory: 256Mi
-          requests:
-            cpu: 200m
-            memory: 256Mi
+            value: https://b45fd817a6ca40988ef20e6ed948a44f-167772166-simba09b.environments.katacoda.com/currencyexchange
+        # resources:
+        #   limits:
+        #     cpu: 100m
+        #     memory: 256Mi
+        #   requests:
+        #     cpu: 100m
+        #     memory: 256Mi
       restartPolicy: Always

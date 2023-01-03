@@ -41,8 +41,12 @@ Run the following command:
 
 ```sh
 git clone https://github.com/bee-travels/config.git
-cd config
+cd bee-travels-config
 ./deploy-k8s.sh
+OR
+./deploy-k8s-v1.sh
+OR
+./deploy-k8s-v2.sh
 ```
 
 ### Knative

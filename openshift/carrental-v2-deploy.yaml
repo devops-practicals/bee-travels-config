@@ -18,10 +18,10 @@ spec:
       maxSurge: 25%
     resources:
       limits:
-        cpu: 200m
+        cpu: 100m
         memory: 256Mi
       requests:
-        cpu: 200m
+        cpu: 100m
         memory: 256Mi
     activeDeadlineSeconds: 21600
   replicas: 1
@@ -62,10 +62,10 @@ spec:
               value: postgres
           resources:
             limits:
-              cpu: 200m
+              cpu: 100m
               memory: 256Mi
             requests:
-              cpu: 200m
+              cpu: 100m
               memory: 256Mi
           imagePullPolicy: Always
       restartPolicy: Always
