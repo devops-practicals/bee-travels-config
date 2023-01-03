@@ -1,4 +1,4 @@
-apiVersion: networking.k8s.io/v1beta1
+apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: bee-travels-ingress
@@ -12,6 +12,9 @@ spec:
       http:
         paths:
           - path: /
+            pathType: Prefix
             backend:
-              serviceName: {{ .Values.ingress.name}}
-              servicePort: 80
+              service:
+                name: {{ .Values.ingress.name }}
+                port:
+                  number: 80
